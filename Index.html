@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>System</title>
+
+    <style>
+        @media (max-width: 767px) {
+            .mobile-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            table { min-width: 850px; } 
+        }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .rotate-icon { transform: rotate(180deg); }
+        .menu-item-content { 
+            max-height: 0; 
+            overflow: hidden; 
+            transition: max-height 0.3s ease-in-out; 
+            background: rgba(0,0,0,0.1);
+        }
+        .menu-item-content.open { max-height: 300px; }
+        .chevron { transition: transform 0.3s; }
+    </style>
+</head>
+
+<body class="font-[Inter,sans-serif] bg-[#FAFAFA]">
+
+    <header class="bg-[#285430] px-4 md:px-10 lg:px-16 text-white pt-2 relative">
+        <div class="flex justify-between items-center">
+            <div class="flex gap-4 md:gap-8 font-medium text-sm items-center">
+                <div>
+                    <svg width="20" height="20" viewBox="0 0 16 16">
+                        <path d="M10 1H6V6L1 6V10H6V15H10V10H15V6L10 6V1Z" fill="#C9DACA" />
+                    </svg>
+                </div>
+
+                <div class="hidden md:flex gap-7">
+                    <div class="bg-white text-[#285430] pb-5 pt-2 px-7 rounded-t-2xl"><a href="#">Users</a></div>
+                    <div class="pt-2"><a href="#">Patients</a></div>
+                    <div class="pt-2"><a href="#">Hospitals</a></div>
+                    <div class="pt-2"><a href="#">Notice</a></div>
+                    <div class="pt-2"><a href="#">Help Center</a></div>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 pb-2">
+                <div class="hidden sm:flex gap-5">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="#ffffff" d="M10,13H3a1,1,0,0,0-1,1v7a1,1,0,0,0,1,1h7a1,1,0,0,0,1-1V14A1,1,0,0,0,10,13ZM9,20H4V15H9ZM21,2H14a1,1,0,0,0-1,1v7a1,1,0,0,0,1,1h7a1,1,0,0,0,1-1V3A1,1,0,0,0,21,2ZM20,9H15V4h5Zm1,4H14a1,1,0,0,0-1,1v7a1,1,0,0,0,1,1h7a1,1,0,0,0,1-1V14A1,1,0,0,0,21,13Zm-1,7H15V15h5ZM10,2H3A1,1,0,0,0,2,3v7a1,1,0,0,0,1,1h7a1,1,0,0,0,1-1V3A1,1,0,0,0,10,2ZM9,9H4V4H9Z"
+                        /> </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="#ffffff" d="M5,12a1,1,0,0,0-1,1v8a1,1,0,0,0,2,0V13A1,1,0,0,0,5,12ZM10,2A1,1,0,0,0,9,3V21a1,1,0,0,0,2,0V3A1,1,0,0,0,10,2ZM20,16a1,1,0,0,0-1,1v4a1,1,0,0,0,2,0V17A1,1,0,0,0,20,16ZM15,8a1,1,0,0,0-1,1V21a1,1,0,0,0,2,0V9A1,1,0,0,0,15,8Z" /> </svg>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="text-right leading-4">
+                        <p class="font-medium text-xs md:text-sm">Marvin Mckinney</p>
+                        <p class="text-[10px] md:text-xs opacity-70">Admin</p>
+                    </div>
+                    <span class="font-medium bg-[#396241] py-1 px-2 rounded text-xs">M</span>
+                </div>
+
+                <button onclick="toggleMenu()" class="md:hidden text-white pt-1 focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobileMenu" class="hidden absolute top-full left-0 w-full bg-[#285430] z-50 flex-col p-4 md:hidden border-t border-[#396241] shadow-2xl">
+            <div class="border-b border-[#396241]">
+                <div onclick="toggleSubMenu('sub-users', this)" class="flex justify-between items-center py-3.5 cursor-pointer">
+                    <span class="text-sm">Users</span>
+                    <i class="fa-solid fa-chevron-down text-[10px] chevron"></i>
+                </div>
+                <div id="sub-users" class="menu-item-content flex flex-col pl-6">
+                    <a href="table.html" class="py-2.5 text-xs opacity-80">Doctors</a>
+                    <a href="Form.html" class="py-2.5 text-xs opacity-80">Add New User</a>
+                    <a href="#" class="py-2.5 text-xs opacity-80">Administration</a>
+                    <a href="#" class="py-2.5 text-xs opacity-80">Accounts</a>
+                </div>
+            </div>
+            <div class="border-b border-[#396241]">
+                <div onclick="toggleSubMenu('sub-patients', this)" class="flex justify-between items-center py-3.5 cursor-pointer">
+                    <span class="text-sm">Patients</span>
+                    <i class="fa-solid fa-chevron-down text-[10px] chevron"></i>
+                </div>
+                <div id="sub-patients" class="menu-item-content flex flex-col pl-6">
+                    <a href="#" class="py-2.5 text-xs opacity-80">Patient Records</a>
+                </div>
+            </div>
+            <div class="border-b border-[#396241]">
+                <div onclick="toggleSubMenu('sub-hospitals', this)" class="flex justify-between items-center py-3.5 cursor-pointer">
+                    <span class="text-sm">Hospitals</span>
+                    <i class="fa-solid fa-chevron-down text-[10px] chevron"></i>
+                </div>
+                <div id="sub-hospitals" class="menu-item-content flex flex-col pl-6">
+                    <a href="#" class="py-2.5 text-xs opacity-80">Hospital List</a>
+                </div>
+            </div>
+            <div class="border-b border-[#396241]">
+                <div onclick="toggleSubMenu('sub-notice', this)" class="flex justify-between items-center py-3.5 cursor-pointer">
+                    <span class="text-sm">Notice</span>
+                    <i class="fa-solid fa-chevron-down text-[10px] chevron"></i>
+                </div>
+                <div id="sub-notice" class="menu-item-content flex flex-col pl-6">
+                    <a href="#" class="py-2.5 text-xs opacity-80">All Notices</a>
+                </div>
+            </div>
+            <div>
+                <div onclick="toggleSubMenu('sub-help', this)" class="flex justify-between items-center py-3.5 cursor-pointer">
+                    <span class="text-sm">Help Center</span>
+                    <i class="fa-solid fa-chevron-down text-[10px] chevron"></i>
+                </div>
+                <div id="sub-help" class="menu-item-content flex flex-col pl-6">
+                    <a href="#" class="py-2.5 text-xs opacity-80 pb-2">FAQs</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="hidden md:flex sticky top-0 z-40 bg-[#FAFAFA] md:px-10 lg:px-16 py-3.5 gap-5 font-medium text-sm text-secondary overflow-x-auto whitespace-nowrap border-b border-gray-100">
+
+        <div class="bg-[#F4FFF3] py-2 px-7 rounded-sm flex-shrink-0 cursor-pointer">Doctors</div>
+
+        <div class="pt-2 flex-shrink-0 cursor-pointer">Administration</div>
+
+        <div class="pt-2 flex-shrink-0 cursor-pointer">Accounts</div>
+
+    </div>
+
+    <div class="bg-[#FAFAFA] py-4 md:py-9 px-4 md:px-10 lg:px-16">
+        <div class="flex flex-col gap-6 bg-white pb-16 px-4 md:px-8 pt-6 rounded-lg shadow-sm border border-gray-100">
+            <div class="flex justify-between items-center">
+                <div class="font-medium">
+                    <p class="text-gray-800 text-lg">Lists of doctors</p>
+                    <p class="text-xs text-[#B5B5C3]">345 available doctors</p>
+                </div>
+                <div class="flex gap-2">
+                    <div class="flex gap-2">
+
+                        <a href="Index.html">
+                            <button class="bg-[#5F8D4E] px-2.5 py-1.5 rounded-md text-white text-xs font-medium">
+                                Table
+                            </button>
+                        </a>
+
+                        <a href="table.html">
+                            <button class="bg-[#5F8D4E] px-2.5 py-1.5 rounded-md text-white text-xs font-medium">
+                                Card
+                            </button>
+                        </a>
+
+                    </div>
+                    <a href="Form.html">
+                        <button class="bg-[#5F8D4E] px-3 py-2 rounded-md text-white font-medium text-xs flex items-center gap-2">
+                            <i class="fa-solid fa-user-plus"></i><span class="hidden md:inline">Add new doctors</span>
+                        </button>
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="mobile-table-wrapper no-scrollbar">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-[#FAFAFA] text-sm font-medium text-[#B5B5C3]">
+                        <tr>
+                            <th class="px-6 py-4">Name</th>
+                            <th class="px-4 py-4">ID</th>
+                            <th class="px-4 py-4">Email</th>
+                            <th class="px-4 py-4">Phone</th>
+                            <th class="px-4 py-4">Date</th>
+                            <th class="px-4 py-4">Status</th>
+                            <th class="px-4 py-4"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                        <tr class="responsive-row border-b border-gray-50">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <img src="Screenshot 2026-03-06 150648.png" class="w-10" alt="dr">
+                                    <div>
+                                        <p class="font-medium">Brooklyn Simmons</p>
+                                        <p class="text-xs text-[#B5B5C3]">Dermatologist</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="data-item px-4 py-4" data-label="ID">87364523</td>
+                            <td class="data-item px-4 py-4" data-label="Email">brooklyns@mail.com</td>
+                            <td class="data-item px-4 py-4" data-label="Phone">(603) 555-0123</td>
+                            <td class="data-item px-4 py-4" data-label="Date">
+                                <div>21/12/2022</div>
+                                <div class="text-[10px] text-[#B5B5C3]">09:00 AM</div>
+                            </td>
+                            <td class="data-item status-div px-4 py-4" data-label="Status">
+                                <button class="text-[#689458] bg-[#F4FFF3] px-3 py-1 rounded-sm text-xs font-semibold">Approved</button>
+                            </td>
+                            <td class="arrow-icon-div px-4 py-4 text-center">
+                                <div class="p-2 bg-[#FAFAFA] rounded-sm inline-block"><i class="fa-solid fa-arrow-right"></i></div>
+                            </td>
+                        </tr>
+                        <tr class="responsive-row border-b border-gray-50">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <img src="Screenshot 2026-03-06 211621.png" class="w-10" alt="dr">
+                                    <div>
+                                        <p class="font-medium">Kristin Watson</p>
+                                        <p class="text-xs text-[#B5B5C3]">Infectious Disease</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="data-item px-4 py-4" data-label="ID">93874563</td>
+                            <td class="data-item px-4 py-4" data-label="Email">kristinw@mail.com</td>
+                            <td class="data-item px-4 py-4" data-label="Phone">(219) 555-0114</td>
+                            <td class="data-item px-4 py-4" data-label="Date">
+                                <div>22/12/2022</div>
+                                <div class="text-[10px] text-[#B5B5C3]">10:30 AM</div>
+                            </td>
+                            <td class="data-item status-div px-4 py-4" data-label="Status">
+                                <button class="text-[#F64E60] bg-[#FFE2E5] px-3 py-1 rounded-sm text-xs font-semibold">Declined</button>
+                            </td>
+                            <td class="arrow-icon-div px-4 py-4 text-center">
+                                <div class="p-2 bg-[#FAFAFA] rounded-sm inline-block"><i class="fa-solid fa-arrow-right"></i></div>
+                            </td>
+                        </tr>
+                        <tr class="responsive-row border-b border-gray-50">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <img src="Screenshot 2026-03-06 211723.png" class="w-10" alt="dr">
+                                    <div>
+                                        <p class="font-medium">Jacob Jones</p>
+                                        <p class="text-xs text-[#B5B5C3]">Dermatologist</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="data-item px-4 py-4" data-label="ID">23847569</td>
+                            <td class="data-item px-4 py-4" data-label="Email">jacbj@mail.com</td>
+                            <td class="data-item px-4 py-4" data-label="Phone">(315) 555-0115</td>
+                            <td class="data-item px-4 py-4" data-label="Date">
+                                <div>23/12/2022</div>
+                                <div class="text-[10px] text-[#B5B5C3]">11:15 AM</div>
+                            </td>
+                            <td class="data-item status-div px-4 py-4" data-label="Status">
+                                <button class="text-[#689458] bg-[#F4FFF3] px-3 py-1 rounded-sm text-xs font-semibold">Approved</button>
+                            </td>
+                            <td class="arrow-icon-div px-4 py-4 text-center">
+                                <div class="p-2 bg-[#FAFAFA] rounded-sm inline-block"><i class="fa-solid fa-arrow-right"></i></div>
+                            </td>
+                        </tr>
+                        <tr class="responsive-row border-b border-gray-50">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <img src="Screenshot 2026-03-06 211748.png" class="w-10" alt="dr">
+                                    <div>
+                                        <p class="font-medium">Cody Fisher</p>
+                                        <p class="text-xs text-[#B5B5C3]">Dermatologist</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="data-item px-4 py-4" data-label="ID">39485632</td>
+                            <td class="data-item px-4 py-4" data-label="Email">codyf@mail.com</td>
+                            <td class="data-item px-4 py-4" data-label="Phone">(229) 555-0109</td>
+                            <td class="data-item px-4 py-4" data-label="Date">
+                                <div>24/12/2022</div>
+                                <div class="text-[10px] text-[#B5B5C3]">01:45 PM</div>
+                            </td>
+                            <td class="data-item status-div px-4 py-4" data-label="Status">
+                                <button class="text-[#689458] bg-[#F4FFF3] px-3 py-1 rounded-sm text-xs font-semibold">Approved</button>
+                            </td>
+                            <td class="arrow-icon-div px-4 py-4 text-center">
+                                <div class="p-2 bg-[#FAFAFA] rounded-sm inline-block"><i class="fa-solid fa-arrow-right"></i></div>
+                            </td>
+                        </tr>
+                        <tr class="responsive-row border-b border-gray-50">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <img src="Screenshot 2026-03-06 150648.png" class="w-10" alt="dr">
+                                    <div>
+                                        <p class="font-medium">Arlene McCoy</p>
+                                        <p class="text-xs text-[#B5B5C3]">Cardiologist</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="data-item px-4 py-4" data-label="ID">48576932</td>
+                            <td class="data-item px-4 py-4" data-label="Email">arlene@mail.com</td>
+                            <td class="data-item px-4 py-4" data-label="Phone">(406) 555-0120</td>
+                            <td class="data-item px-4 py-4" data-label="Date">
+                                <div>25/12/2022</div>
+                                <div class="text-[10px] text-[#B5B5C3]">03:20 PM</div>
+                            </td>
+                            <td class="data-item status-div px-4 py-4" data-label="Status">
+                                <button class="text-[#689458] bg-[#F4FFF3] px-3 py-1 rounded-sm text-xs font-semibold">Approved</button>
+                            </td>
+                            <td class="arrow-icon-div px-4 py-4 text-center">
+                                <div class="p-2 bg-[#FAFAFA] rounded-sm inline-block"><i class="fa-solid fa-arrow-right"></i></div>
+                            </td>
+                        </tr>
+                        <tr class="responsive-row border-b border-gray-50">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <img src="Screenshot 2026-03-06 211621.png" class="w-10" alt="dr">
+                                    <div>
+                                        <p class="font-medium">Robert Fox</p>
+                                        <p class="text-xs text-[#B5B5C3]">Neurologist</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="data-item px-4 py-4" data-label="ID">19283746</td>
+                            <td class="data-item px-4 py-4" data-label="Email">robert@mail.com</td>
+                            <td class="data-item px-4 py-4" data-label="Phone">(252) 555-0126</td>
+                            <td class="data-item px-4 py-4" data-label="Date">
+                                <div>26/12/2022</div>
+                                <div class="text-[10px] text-[#B5B5C3]">04:00 PM</div>
+                            </td>
+                            <td class="data-item status-div px-4 py-4" data-label="Status">
+                                <button class="text-[#F64E60] bg-[#FFE2E5] px-3 py-1 rounded-sm text-xs font-semibold">Declined</button>
+                            </td>
+                            <td class="arrow-icon-div px-4 py-4 text-center">
+                                <div class="p-2 bg-[#FAFAFA] rounded-sm inline-block"><i class="fa-solid fa-arrow-right"></i></div>
+                            </td>
+                        </tr>
+                        <tr class="responsive-row border-b border-gray-50">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <img src="Screenshot 2026-03-06 211723.png" class="w-10" alt="dr">
+                                    <div>
+                                        <p class="font-medium">Esther Howard</p>
+                                        <p class="text-xs text-[#B5B5C3]">Dermatologist</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="data-item px-4 py-4" data-label="ID">77483920</td>
+                            <td class="data-item px-4 py-4" data-label="Email">esther@mail.com</td>
+                            <td class="data-item px-4 py-4" data-label="Phone">(201) 555-0124</td>
+                            <td class="data-item px-4 py-4" data-label="Date">
+                                <div>27/12/2022</div>
+                                <div class="text-[10px] text-[#B5B5C3]">05:30 PM</div>
+                            </td>
+                            <td class="data-item status-div px-4 py-4" data-label="Status">
+                                <button class="text-[#689458] bg-[#F4FFF3] px-3 py-1 rounded-sm text-xs font-semibold">Approved</button>
+                            </td>
+                            <td class="arrow-icon-div px-4 py-4 text-center">
+                                <div class="p-2 bg-[#FAFAFA] rounded-sm inline-block"><i class="fa-solid fa-arrow-right"></i></div>
+                            </td>
+                        </tr>
+                        <tr class="responsive-row border-b border-gray-50">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <img src="Screenshot 2026-03-06 211748.png" class="w-10" alt="dr">
+                                    <div>
+                                        <p class="font-medium">Jenny Wilson</p>
+                                        <p class="text-xs text-[#B5B5C3]">Infectious Disease</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="data-item px-4 py-4" data-label="ID">55667788</td>
+                            <td class="data-item px-4 py-4" data-label="Email">jenny@mail.com</td>
+                            <td class="data-item px-4 py-4" data-label="Phone">(209) 555-0104</td>
+                            <td class="data-item px-4 py-4" data-label="Date">
+                                <div>28/12/2022</div>
+                                <div class="text-[10px] text-[#B5B5C3]">06:45 PM</div>
+                            </td>
+                            <td class="data-item status-div px-4 py-4" data-label="Status">
+                                <button class="text-[#689458] bg-[#F4FFF3] px-3 py-1 rounded-sm text-xs font-semibold">Approved</button>
+                            </td>
+                            <td class="arrow-icon-div px-4 py-4 text-center">
+                                <div class="p-2 bg-[#FAFAFA] rounded-sm inline-block"><i class="fa-solid fa-arrow-right"></i></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('flex');
+        }
+
+        function toggleSubMenu(id, el) {
+            const subMenu = document.getElementById(id);
+            const icon = el.querySelector('.chevron');
+            
+            document.querySelectorAll('.menu-item-content').forEach(item => {
+                if(item.id !== id) {
+                    item.classList.remove('open');
+                    const otherIcon = item.previousElementSibling.querySelector('.chevron');
+                    if(otherIcon) otherIcon.classList.remove('rotate-icon');
+                }
+            });
+
+            subMenu.classList.toggle('open');
+            icon.classList.toggle('rotate-icon');
+        }
+    </script>
+</body>
+
+</html>
